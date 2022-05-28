@@ -2,6 +2,8 @@
 ; Under the MIT License
 ; Copyright (c) 2022 Antonin Hérault
 
+; Parameters :
+;   si: byte[]
 print_chars:
     push ax
     push bx

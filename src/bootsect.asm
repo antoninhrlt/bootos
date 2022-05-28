@@ -10,6 +10,7 @@ org 0x0
 ; Includes have to be done before the jump instruction because program doesn't
 ; want another instructions before
 %include "print.asm"
+%include "gdt.asm"
 %include "defs.inc"
 
 ; Segments initialization at 0x07C0
@@ -54,21 +55,43 @@ load_kernel:
     int 0x13
     pop es
 
-    mov si, msg_bye
+    mov si, msg_gdt
     call print_chars
+
+    call init_gdt_pointer
+    
+    mov si, msg_mode
+    call print_chars
+
+    jmp protected_mode
+
+protected_mode:
+    cli
+    lgdt [gdt_ptr] ; load GDT
+    or ax, 1
+    mov cr0, eax
 
     jmp call_kernel
 
 ; Calls the kernel at 0x1000 in the device found at `load_kernel`
 call_kernel:
-    jmp dword BASE:0
+    mov ax, 0x10
+    mov ds, ax
+    mov fs, ax
+    mov gs, ax
+    mov es, ax
+    mov ss, ax
+    mov esp, 0x9F000
+
+    jmp dword 0x8:0x1000
 
     ; For kernels that don't loop when problem :
     jmp $
 
 ; Data
 msg_hello: db "> Loading the kernel ...", 13, 10, 0
-msg_bye: db  "> Passing control to the kernel ...", 13, 10, 0
+msg_gdt: db "> Loading GDT ...", 13, 10, 0
+msg_mode: db "> Passing to protected mode ...", 13, 10, 0
 boot_drv: db 0
 
 ; Fill remaining space with 0, binary file = 512 Bytes

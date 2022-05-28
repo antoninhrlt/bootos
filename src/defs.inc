@@ -5,4 +5,4 @@
 ; 0x0100:0x0 = 0x1000
 %define BASE 0x100
 ; It defines how much sectors we have to load
-%define SECTORS 1
+%define SECTORS 50
