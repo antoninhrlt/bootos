@@ -17,11 +17,11 @@ Your Makefile :
 ```make
 # Generates "floppy disk" with the operating system, runnable with "qemu"
 floppy : bootos/build/bootos build/kernel
-	cat $^ $< /dev/zero | dd of=$@ bs=512 count=2880
+    cat $^ $< /dev/zero | dd of=$@ bs=512 count=2880
 
 # Builds the kernel
 build/kernel : build/kernel.o
-	ld --oformat binary -Ttext 1000 -o build/kernel build/kernel.o 
+    ld --oformat binary -Ttext 1000 -o build/kernel build/kernel.o 
 
 build/kernel.o : src/kernel.c
     gcc -c -o $@ $<
