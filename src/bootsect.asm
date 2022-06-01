@@ -7,7 +7,7 @@ org 0x0
 
     jmp init
 
-; Includes have to be done before the jump instruction because program doesn't
+; Includes have to be done after the jump instruction because program does not
 ; want another instructions before
 %include "print.asm"
 %include "gdt.asm"

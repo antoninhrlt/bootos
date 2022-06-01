@@ -11,7 +11,7 @@ print_chars:
     .loop:
         lodsb ; ds:si -> al
         
-        ; Check for NULL character
+        ; Checks for NULL character
         cmp al, 0 
             jz .print_end
         
